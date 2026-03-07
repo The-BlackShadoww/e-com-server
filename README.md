@@ -1,6 +1,6 @@
 # E-com Backend
 
-A basic Node.js project.
+A basic TypeScript Express server.
 
 ## Installation
 
@@ -8,8 +8,22 @@ A basic Node.js project.
 npm install
 ```
 
-## Usage
+## Development
 
 ```bash
-node index.js
+npm run dev
 ```
+
+## Build
+
+```bash
+npm run build
+```
+
+## Production
+
+```bash
+npm run start
+```
+
+The server runs on http://localhost:3000
