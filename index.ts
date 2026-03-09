@@ -1,11 +1,28 @@
 import express from "express";
+import dotenv from "dotenv";
+import connectDB from "./config/database";
+import userRoutes from "./routes/users";
+
+// Load environment variables
+dotenv.config();
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
+// Connect to MongoDB
+connectDB();
+
+// Middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// Routes
 app.get("/", (req, res) => {
-  res.send("Hello World!");
+  res.json({ message: "E-commerce Backend API" });
 });
+
+// API Routes
+app.use("/api/users", userRoutes);
 
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
