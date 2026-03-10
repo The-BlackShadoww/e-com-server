@@ -2,6 +2,8 @@ import express from "express";
 import dotenv from "dotenv";
 import connectDB from "./config/database";
 import userRoutes from "./routes/users";
+import categoryRoutes from "./routes/categories";
+import productRoutes from "./routes/products";
 
 // Load environment variables
 dotenv.config();
@@ -23,6 +25,8 @@ app.get("/", (req, res) => {
 
 // API Routes
 app.use("/api/users", userRoutes);
+app.use("/api/categories", categoryRoutes);
+app.use("/api/products", productRoutes);
 
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
