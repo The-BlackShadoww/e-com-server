@@ -6,3 +6,23 @@ export interface ICart extends Document {
   createdAt: Date;
   updatedAt: Date;
 }
+
+const CartSchema: Schema = new Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    description: {
+      type: String,
+      trim: true,
+    },
+  },
+  {
+    timestamps: true,
+  },
+);
+
+export default mongoose.model<ICart>("Cart", CartSchema);
+
