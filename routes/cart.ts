@@ -21,7 +21,6 @@ router.post("/", async (req: Request, res: Response) => {
     res.status(500).json({ message: "Server error", error });
   }
 });
-/*******  0033e053-f1a0-464c-829c-b4cfc8a7bb86  *******/
 
 // GET /api/cart - Get cart by user ID
 router.get("/:userId", async (req, res) => {
