@@ -1,4 +1,5 @@
 import express from "express";
+import bcrypt from "bcryptjs";
 import User from "../models/User";
 
 const router = express.Router();
@@ -31,13 +32,20 @@ router.post("/", async (req, res) => {
   try {
     const { name, email, password } = req.body;
 
+    if (!name || !email || !password) {
+      return res
+        .status(400)
+        .json({ message: "name, email and password required" });
+    }
+
     // Check if user already exists
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ message: "User already exists" });
     }
 
-    const user = new User({ name, email, password });
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const user = new User({ name, email, password: hashedPassword });
     await user.save();
 
     res.status(201).json({
@@ -58,11 +66,16 @@ router.post("/", async (req, res) => {
 router.put("/:id", async (req, res) => {
   try {
     const { name, email, password } = req.body;
-    const user = await User.findByIdAndUpdate(
-      req.params.id,
-      { name, email, password },
-      { new: true, runValidators: true },
-    ).select("-password");
+    const updateData: any = { name, email };
+
+    if (password) {
+      updateData.password = await bcrypt.hash(password, 10);
+    }
+
+    const user = await User.findByIdAndUpdate(req.params.id, updateData, {
+      new: true,
+      runValidators: true,
+    }).select("-password");
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });

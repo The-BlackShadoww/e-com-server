@@ -2,6 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import connectDB from "./config/database";
 import userRoutes from "./routes/users";
+import authRoutes from "./routes/auth";
 import categoryRoutes from "./routes/categories";
 import productRoutes from "./routes/products";
 import orderRoutes from "./routes/orders";
@@ -25,6 +26,7 @@ app.get("/", (req, res) => {
 });
 
 // API Routes
+app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/categories", categoryRoutes);
 app.use("/api/products", productRoutes);

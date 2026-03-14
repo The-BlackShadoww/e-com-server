@@ -1,10 +1,11 @@
 import express from "express";
 import Order from "../models/Order";
+import { authenticate } from "../middleware/auth";
 
 const router = express.Router();
 
 // GET /api/orders - Get all orders (admin functionality)
-router.get("/", async (req, res) => {
+router.get("/", authenticate, async (req, res) => {
   try {
     const orders = await Order.find()
       .populate("user", "name email")
@@ -16,7 +17,7 @@ router.get("/", async (req, res) => {
 });
 
 // GET /api/orders/:id - Get order by ID
-router.get("/:id", async (req, res) => {
+router.get("/:id", authenticate, async (req, res) => {
   try {
     const order = await Order.findById(req.params.id)
       .populate("user", "name email")
@@ -31,7 +32,7 @@ router.get("/:id", async (req, res) => {
 });
 
 // GET /api/orders/user/:userId - Get orders by user ID
-router.get("/user/:userId", async (req, res) => {
+router.get("/user/:userId", authenticate, async (req, res) => {
   try {
     const orders = await Order.find({ user: req.params.userId })
       .populate("user", "name email")
@@ -43,7 +44,7 @@ router.get("/user/:userId", async (req, res) => {
 });
 
 // POST /api/orders - Create a new order
-router.post("/", async (req, res) => {
+router.post("/", authenticate, async (req, res) => {
   try {
     const {
       user,
@@ -76,7 +77,7 @@ router.post("/", async (req, res) => {
 });
 
 // PUT /api/orders/:id - Update order
-router.put("/:id", async (req, res) => {
+router.put("/:id", authenticate, async (req, res) => {
   try {
     const { products, totalAmount, status, shippingAddress, paymentStatus } =
       req.body;
@@ -105,7 +106,7 @@ router.put("/:id", async (req, res) => {
 });
 
 // PUT /api/orders/:id/status - Update order status
-router.put("/:id/status", async (req, res) => {
+router.put("/:id/status", authenticate, async (req, res) => {
   try {
     const { status } = req.body;
     const order = await Order.findByIdAndUpdate(
@@ -127,7 +128,7 @@ router.put("/:id/status", async (req, res) => {
 });
 
 // DELETE /api/orders/:id - Delete order
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", authenticate, async (req, res) => {
   try {
     const order = await Order.findByIdAndDelete(req.params.id);
     if (!order) {

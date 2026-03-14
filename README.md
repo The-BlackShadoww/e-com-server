@@ -22,7 +22,10 @@ Create a `.env` file in the root directory:
 ```env
 MONGODB_URI=mongodb://localhost:27017/ecom-backend
 PORT=3000
+JWT_SECRET=your_super_secret_key
 ```
+
+> Note: Make sure `JWT_SECRET` is strong and not checked into source control.
 
 ## MongoDB Setup
 

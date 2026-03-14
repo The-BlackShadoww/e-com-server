@@ -1,11 +1,12 @@
 import express from "express";
 import { Request, Response } from "express";
 import Cart from "../models/Cart";
+import { authenticate } from "../middleware/auth";
 
 const router = express.Router();
 
 // POST /api/cart - Create a new cart for a user
-router.post("/", async (req: Request, res: Response) => {
+router.post("/", authenticate, async (req: Request, res: Response) => {
   try {
     const { userId } = req.body;
     const existingCart = await Cart.findOne({ userId });
@@ -23,7 +24,7 @@ router.post("/", async (req: Request, res: Response) => {
 });
 
 // GET /api/cart - Get cart by user ID
-router.get("/:userId", async (req, res) => {
+router.get("/:userId", authenticate, async (req, res) => {
   try {
     const userId = req.params.userId;
     const cart = await Cart.findOne({ userId }).populate(
